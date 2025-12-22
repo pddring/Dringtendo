@@ -1,0 +1,23 @@
+// Fill screen with smiles
+LDA #97 // Smiley face
+STA BackgroundSprite
+CALL FillScreen
+
+LDA #98 // Sad face
+STA BackgroundSprite
+CALL FillScreen
+HLT
+
+FillScreen: LDA #63 // Copy BackgroundSprite into 0-63
+STA i
+ScreenLoop: LDA BackgroundSprite
+STA ~i // indirect addressing (i stores an address)
+LDA i
+SUB #1 // decrease address
+STA i
+BRP ScreenLoop // repeat for each screen cell
+RET
+
+ORG 69 // set next memory address to 69 (after screen and buttons)
+BackgroundSprite: DAT 5
+i: DAT 63

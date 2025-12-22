@@ -1,0 +1,68 @@
+// Move a sprite around the screen using interrupts
+LDISR Button // Set interrupt handler
+
+CALL UpdateScreen	// Clear background and draw player
+HLT
+
+Button: LDA Up // Interrupt handler
+
+BRZ NoBtnUp // Check if up button was pressed
+LDA pos
+SUB #8
+STA pos
+LDA #0
+STA Up
+
+NoBtnUp:LDA Down // Check if Down button was pressed
+BRZ NoBtnDown
+LDA pos
+ADD #8
+STA pos
+LDA #0
+STA Down
+
+NoBtnDown: LDA Left // Check if Left button was pressed
+BRZ NoBtnLeft
+LDA pos
+SUB #1
+STA pos
+LDA #0
+STA Left
+
+NoBtnLeft: LDA Right // Check if right button was pressed
+BRZ NoBtnRight
+LDA pos
+ADD #1
+STA pos
+LDA #0
+STA Right
+
+NoBtnRight: CALL UpdateScreen // Update screen
+RET
+
+UpdateScreen: CALL ClearScreen // Display game
+LDA player
+STA ~pos
+RET
+
+ClearScreen: LDA #63 // Clear game background
+STA i
+ScreenLoop: LDA Background
+STA ~i
+LDA i
+SUB #1
+STA i
+BRP ScreenLoop
+RET
+
+ORG 64 // Start putting labels at address 64 (mapped to up button)
+
+Up:DAT // Buttons
+Down:DAT
+Left:DAT
+Right:DAT
+
+i: DAT              // Used for looping through each pixel
+pos: DAT            // Player position 
+background: DAT 50  // Background sprite
+player: DAT 41      // Player sprite

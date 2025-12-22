@@ -1,0 +1,18 @@
+// Display HELLO WORLD
+ORG 25		// set next data memory address to 25
+Letters: DAT 72	// ASCII 72 is 'H'
+DAT 69
+DAT 76
+DAT 76
+DAT 79
+DAT 0
+DAT 0
+DAT 0
+DAT 87
+DAT 79
+DAT 82
+DAT 76
+DAT 68
+DAT 0
+DAT 0
+DAT 0

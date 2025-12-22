@@ -1,0 +1,47 @@
+// Caesar cipher (no wrapping around alphabet)
+INP // input the caesar shift
+STA Shift
+
+CALL CaesarShift    // shift HELLO
+
+LDA #33
+STA StartPos
+LDA #4
+STA CharCount
+CALL CaesarShift    // shift WORLD
+HLT
+
+CaesarShift: LDIR StartPos
+LDA [CharCount]
+ADD Shift
+STA [CharCount]
+LDA CharCount
+SUB #1
+STA CharCount
+BRP CaesarShift
+RET
+
+
+ORG 69
+Shift: DAT
+CharCount: DAT 4
+StartPos: DAT 25
+
+ORG 25		// set next data memory address to 25
+Hello: DAT 72	// ASCII 72 is 'H'
+DAT 69
+DAT 76
+DAT 76
+DAT 79
+DAT 0
+DAT 0
+DAT 0
+World: DAT 87
+DAT 79
+DAT 82
+DAT 76
+DAT 68
+DAT 0
+DAT 0
+DAT 0
+															
