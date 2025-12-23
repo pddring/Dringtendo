@@ -2,6 +2,7 @@
 #include <U8g2lib.h>
 #include <Adafruit_NeoMatrix.h>
 #include <Adafruit_NeoPixel.h>
+#include "sprites.h"
 
 #define PIN_RGB_MATRIX 0
 
@@ -20,6 +21,7 @@ const uint16_t colors[] = {
 U8G2_SSD1306_72X40_ER_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE, 6, 5);
 void setup() {
   // put your setup code here, to run once:
+  
 
   matrix.begin();
   matrix.setTextWrap(false);
@@ -37,15 +39,15 @@ void setup() {
   Serial.begin(9600);
 }
 
-int width = 72; 
-int height = 40; 
-int i = 0;
+  int width = 72; 
+  int height = 40; 
+  int i = 0;
 void loop() {
   // put your main code here, to run repeatedly:
   digitalWrite(8, HIGH);
-  delay(1000);
+  delay(100);
   digitalWrite(8, LOW);
-  delay(1000);
+  delay(100);
 
   u8g2.clearBuffer(); // clear the internal memory
   u8g2.drawFrame(0, 0, width, height); //draw a frame around the border
@@ -53,10 +55,12 @@ void loop() {
   u8g2.printf("%d", i);
   u8g2.sendBuffer(); // transfer internal memory to the display
   Serial.print("Serial: ");
-  Serial.println(i++);
+  Serial.println(i);
 
-  matrix.fillScreen(1);
-  matrix.setCursor(0, 0);
-  matrix.printf("%d", i);
+  for(int p = 0; p < 64; p++) {
+    matrix.setPixelColor(p, sprites[i][p*3], sprites[i][p*3+1], sprites[i][p*3+2]);
+  }
+  
   matrix.show();
+  i = (i + 1) % 99;
 }
